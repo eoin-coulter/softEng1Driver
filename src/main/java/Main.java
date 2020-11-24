@@ -10,6 +10,8 @@ public class Main {
         Main main = new Main();
 
 
+
+
         ArrayList<Course> courses = new ArrayList<Course>();
         ArrayList<Student> students = new ArrayList<Student>();
 
@@ -26,28 +28,51 @@ public class Main {
         courses.add(BCT);
         courses.add(BCS);
 
-        Student Eoin = new Student("Eoin Coulter", 21, 17902302, new ArrayList<Course>(), new ArrayList<Module>(), new Date(01 / 12 / 1998));
-        Student Bob = new Student("Bob Bobson", 21, 17902301, new ArrayList<Course>(), new ArrayList<Module>(), new Date(02 / 11 / 1913));
-        Student Ciaran = new Student("Ciaran King", 57, 17902399, new ArrayList<Course>(), new ArrayList<Module>(), new Date(01 / 12 / 1987));
+        Student Eoin = new Student("Eoin Coulter", 21, 17902302, null,  new ArrayList<Module>(), new Date(01 / 12 / 1998));
+        Student Bob = new Student("Bob Bobson", 21, 17902301, null, new ArrayList<Module>(), new Date(02 / 11 / 1913));
+        Student Ciaran = new Student("Ciaran King", 57, 17902399,  null, new ArrayList<Module>(), new Date(01 / 12 / 1987));
 
 
-        main.AddStudentToModule(SoftEngineering, Eoin);
-        main.AddStudentToModule(DataBaseSystems, Eoin);
-        main.AddStudentToModule(MachineLearning, Eoin);
-        main.AddStudentToModule(MachineLearning, Ciaran);
-        main.AddStudentToModule(ArtificialIntelligence, Bob);
-        main.AddStudentToModule(ImageProcessing, Ciaran);
-        main.AddStudentToModule(SoftEngineering, Bob);
-        main.AddStudentToModule(DataBaseSystems, Bob);
 
-        main.AddModuleToCourse(ImageProcessing, BCT);
-        main.AddModuleToCourse(MachineLearning, BCS);
-        main.AddModuleToCourse(ArtificialIntelligence, BCT);
-        main.AddModuleToCourse(SoftEngineering, BCT);
-        main.AddModuleToCourse(DataBaseSystems, BCS);
+        Eoin.addStudentToModule(Eoin,SoftEngineering);
+        Eoin.addStudentToModule(Eoin,DataBaseSystems);
+        Eoin.addStudentToModule(Eoin,MachineLearning);
+        Ciaran.addStudentToModule(Ciaran,MachineLearning);
+        Bob.addStudentToModule(Bob,ArtificialIntelligence);
+        Ciaran.addStudentToModule(Ciaran,ImageProcessing);
+        Bob.addStudentToModule(Bob,SoftEngineering);
+        Bob.addStudentToModule(Bob,DataBaseSystems);
+
+       BCT.AddStudentToCourse(Eoin);
+       BCS.AddStudentToCourse(Bob);
+       BCT.AddStudentToCourse(Ciaran);
+
+
+
+        SoftEngineering.addModuleToCourse(SoftEngineering,BCT);
+        ImageProcessing.addModuleToCourse(ImageProcessing,BCT);
+        MachineLearning.addModuleToCourse(MachineLearning,BCS);
+        DataBaseSystems.addModuleToCourse(DataBaseSystems,BCS);
+        ArtificialIntelligence.addModuleToCourse(ArtificialIntelligence,BCS);
+
+
+
+
+
+
+
+
 
         for (Course course : courses) {
             System.out.print("Course Name: " + course.getName() + "\n");
+            System.out.println("Students in Course :");
+            for(Student studentsInCourse:course.getStudents()){
+                System.out.println(studentsInCourse.getUserName());
+            }
+
+            System.out.println("-------------------");
+
+
 
             System.out.println("Modules in Course");
             for (Module module : course.getModule()) {
@@ -55,6 +80,8 @@ public class Main {
 
                 for (Student student : module.getStudents()) {
                     if (students.contains(student) == false)
+
+
 
                         students.add(student);
 
@@ -77,74 +104,23 @@ public class Main {
             }
 
             System.out.println("Assigned courses:");
-            for (Course course : student.getCourses()) {
+          Course course = student.getCourses();
                 System.out.println(course.getName() + "");
-            }
+
             System.out.println("-------------------");
 
 
-        }
 
 
-    }
 
 
-    public void AddStudentToModule(Module module, Student student) {
-        if (student.getModules().contains(module)) {
-            return;
-        } else {
-            ArrayList<Student> temp = module.getStudents();
-            ArrayList<Module> studentModules = student.getModules();
-            temp.add(student);
-            studentModules.add(module);
-            module.setStudents(temp);
-
-            student.setModules(studentModules);
 
         }
 
-    }
-
-    public void addStudentToCourse(Student student, Course course) {
-
-        ArrayList<Course> coursesEnrolled = student.getCourses();
-        if (coursesEnrolled.contains(course) == true) {
-            return;
-        } else
-            coursesEnrolled.add(course);
-        student.setCourses(coursesEnrolled);
-    }
-
-
-    public void AddModuleToCourse(Module module, Course course) {
-
-        if (module.getCourses().contains(course)) {
-            return;
-        } else {
-            ArrayList<Course> temp = module.getCourses();
-            temp.add(course);
-            module.setCourses(temp);
-            ArrayList<Module> modulesInCourse = course.getModule();
-            modulesInCourse.add(module);
-            course.setModule(modulesInCourse);
-
-            ArrayList<Student> studentsInModule = module.getStudents();
-
-            ArrayList<Student> studentsInCourse = course.getStudents();
-            for (Student studentInModule : studentsInModule) {
-
-
-                studentsInCourse.add(studentInModule);
-
-
-            }
-            course.setStudents(studentsInCourse);
-            for (Student studentInCourse : studentsInCourse) {
-
-                addStudentToCourse(studentInCourse, course);
-            }
-
-        }
 
     }
+
+
+
+
 }
